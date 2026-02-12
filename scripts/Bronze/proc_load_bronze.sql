@@ -16,8 +16,7 @@ EXEC bronze.load_bronze;
 
 =================================================
 
-*/
-
+*/ 
 
 CREATE OR ALTER PROCEDURE bronze.load_bronze AS
 BEGIN
@@ -129,6 +128,11 @@ BEGIN
 		SET @end_time = GETDATE();
 		PRINT'>> Load Duration: ' + CAST(DATEDIFF(second, @start_time, @end_time) AS NVARCHAR) + ' seconds'
 		PRINT '--------------------------------'
+		SET @etl_end_time = GETDATE();
+		PRINT'=============================================================';
+		PRINT'Bronze Layer has been loaded successfully.';
+		PRINT ' - Total Time Duration to Load Bronze Layer: ' + CAST(DATEDIFF(second, @etl_start_time, @etl_end_time) AS NVARCHAR) + ' seconds'
+		PRINT'=============================================================';
 	END TRY
 	BEGIN CATCH
 		PRINT'=============================================================';
@@ -138,9 +142,4 @@ BEGIN
 		PRINT'Error Message: ' + CAST(ERROR_STATE() AS NVARCHAR);
 		PRINT'=============================================================';
 	END CATCH
-	SET @etl_end_time = GETDATE();
-	PRINT'=============================================================';
-	PRINT'Bronze Layer has been loaded successfully.';
-	PRINT 'Total Time Duration to Load Bronze Layer: ' + CAST(DATEDIFF(second, @etl_start_time, @etl_end_time) AS NVARCHAR) + ' seconds'
-	PRINT'=============================================================';
 END;
